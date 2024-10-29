@@ -14,7 +14,8 @@ from sensor.utils import dump_csv_file_to_mongo_db
 
 '''
 if __name__ == "__main__":
-  file_path="D:\OneDrive\Desktop\GITHUB CLONE REPO\LiveSensor\dataset\aps_failure_test_set_processed_8bit.csv"
+  file_path=file_path = r"dataset\aps_fail_result.csv"
+
   database_name="sensor_data"
   collection_name="sensor_data_colection"
   dump_csv_file_to_mongo_db(file_path,database_name,collection_name)

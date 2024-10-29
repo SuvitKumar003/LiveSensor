@@ -1,15 +1,30 @@
 from dataclasses import dataclass
 import os
 import pymongo
-import urllib.parse
+from dotenv import load_dotenv
+from urllib.parse import quote_plus
+
+# Load environment variables from .env file
+load_dotenv()
 
 @dataclass
 class EnvironmentVariable:
-    mongo_db_url: str = os.getenv("MONGO_DB_URL")
+    mongo_username: str = os.getenv("MONGO_USERNAME")
+    mongo_password: str = os.getenv("MONGO_PASSWORD")
+    mongo_cluster: str = os.getenv("MONGO_CLUSTER")
 
-# Ensure special characters are URL-encoded
-url = EnvironmentVariable().mongo_db_url
-if url:
-    mongo_client = pymongo.MongoClient(url)
-else:
-    raise ValueError("MONGO_DB_URL environment variable is not set or empty.")
+    def get_mongo_uri(self):
+        if not (self.mongo_username and self.mongo_password and self.mongo_cluster):
+            raise ValueError("Environment variables for MongoDB connection are not set correctly.")
+        
+        # Encode username and password
+        username = quote_plus(self.mongo_username)
+        password = quote_plus(self.mongo_password)
+
+        # Construct the MongoDB URI
+        mongo_uri = f"mongodb+srv://{username}:{password}@{self.mongo_cluster}/?retryWrites=true&w=majority"
+        return mongo_uri
+
+# Initialize the MongoDB client with the constructed URI
+env_vars = EnvironmentVariable()
+mongo_client = pymongo.MongoClient(env_vars.get_mongo_uri())
