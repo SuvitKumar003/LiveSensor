@@ -14,10 +14,10 @@ class MongoDBClient:
 
   def __init__(self,database_name=DATABASE_NAME)->None:
 
-    try:
+       try:
 
-      if MongoDBClient.client is None:
-        mongo_db_url=os.getenv(MONGO_URL_KEY)
-        logging.info(" Retrive mongo db url i s:{mongo_db_url}")
-      else:
-        Mong 
+          if MongoDBClient.client is None:
+               mongo_db_url=os.getenv(MONGO_URL_KEY)
+               logging.info(" Retrive mongo db url i s:{mongo_db_url}")
+          else:
+                 Mong 
